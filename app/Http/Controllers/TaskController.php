@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Task;
+
+class TaskController extends Controller
+{
+    public function tasks() {
+        $tasks = Task::all();
+        return response()->json(
+            [
+                'tasks' => $tasks,
+                'message' => 'Tasks',
+                'code' => 200
+            ]
+        );
+    }
+
+    public function getTask($id) {
+        $task = Task::find($id);
+        return response()->json($task);
+    }
+
+    public function saveTask(Request $request) {
+        $task = new Task();
+        $task->name = $request->name;
+        $task->url = $request->url;
+        $task->completed = $request->completed ?? false;
+        $task->save();
+        return response()->json([
+            'message' => 'Task Created Successfully!',
+            'code' => 200
+        ]);
+    }
+}
