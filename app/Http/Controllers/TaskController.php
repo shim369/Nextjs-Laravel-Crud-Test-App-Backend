@@ -34,4 +34,32 @@ class TaskController extends Controller
             'code' => 200
         ]);
     }
+
+    public function deleteTask($id) {
+        $task = Task::find($id);
+        if($task) {
+            $task->delete();
+            return response()->json([
+                'message' => 'Task Deleted Successfully!',
+                'code' => 200
+            ]);
+        } else {
+            return response()->json([
+                'message' => "Task id:$id does not exits",
+                'code' => 200
+            ]);
+        }
+    }
+
+    public function updateTask($id, Request $request) {
+        $task = Task::where('id', $id)->first();
+        $task->name = $request->name;
+        $task->url = $request->url;
+        $task->completed = $request->completed;
+        $task->save();
+        return response()->json([
+            'message' => 'Task Updated Successfully!',
+            'code' => 200
+        ]);
+    }
 }
